@@ -1,5 +1,5 @@
 require("dotenv");
-const MongoClient = require("mongodb").MongoClient;
+const mongoose = require('mongoose');
 
 const mDBPassword = process.env.MDBPASSWORD;
 
@@ -7,15 +7,10 @@ const mDBUser = process.env.MDBUSER;
 
 const connectString = `mongodb+srv://${mDBUser}:${mDBPassword}@cluster0-2ytf0.mongodb.net/test?retryWrites=true&w=majority`;
 
-MongoClient.connect(
-  connectString,
-  { useUnifiedTopology: true },
-  (err, client) => {
-    if (err) {
-      return console.log("Error :", err);
-    }
-    console.log("connected to Database");
-  }
-);
+mongoose.connect(connectString, { useNewUrlParser: true, useUnifiedTopology: true })
+.then(client => console.log('Connected to DB'))
+.catch(err=>console.log('Your Error :', err)); 
 
-module.exports = MongoClient;
+const db = ()=> mongoose.connection
+
+module.exports = db;

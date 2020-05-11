@@ -1,10 +1,13 @@
 const express = require('express')
 const helmet = require('helmet')
 const cors = require('cors')
+const bodyparser = require('body-parser')
 const server = express()
 const router = require('../routes/mainRouter.js')
 const DB = require('../data/db')
 
+
+server.use(bodyparser)
 server.use(express.json());
 server.use(helmet())
 server.use(cors())
