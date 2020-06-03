@@ -5,12 +5,12 @@ const mDBPassword = process.env.MDBPASSWORD;
 
 const mDBUser = process.env.MDBUSER;
 
-const connectString = `mongodb+srv://${mDBUser}:${mDBPassword}@cluster0-2ytf0.mongodb.net/test?retryWrites=true&w=majority`;
+mongoose.connect(`mongodb+srv://${mDBUser}:${mDBPassword}@cluster0-2ytf0.mongodb.net/communityCircle?retryWrites=true&w=majority`, { useNewUrlParser: true })
+    .then(()=>console.log("connected to the db"))
+    .catch(e => {
+        console.error('Connection error', e.message)
+    })
 
-mongoose.connect(connectString, { useNewUrlParser: true, useUnifiedTopology: true })
-.then(client => console.log('Connected to DB'))
-.catch(err=>console.log('Your Error :', err)); 
+const db = mongoose.connection
 
-const db = ()=> mongoose.connection
-
-module.exports = db;
+module.exports = db
