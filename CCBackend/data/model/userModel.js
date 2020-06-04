@@ -13,13 +13,14 @@ const User = new Schema(
     userName: { type: String, unique: true, required: true },
     password: {
       type: String,
-      required: "Password is Required",
+     
       validate: [
         function (input) {
           return input.length >= 6;
         },
         "Password should be longer",
       ],
+      required: ()=>password!= null,
     },
     email: {
       type: String,
