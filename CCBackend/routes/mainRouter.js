@@ -2,13 +2,13 @@ require('dotenv').config()
 const express = require('express')
 const router = express.Router();
 
-const userHelper = require('./Helpers/userHelpers')
+const signup = require('../auth/authRoutes')
 
 router.get('/api', (req, res)=>{
     res.send('hola')
     console.log('hey there')
 })
 
-router.post('/api/users', userHelper.createUser)
+router.use('/api/', signup)
 
 module.exports = router;
