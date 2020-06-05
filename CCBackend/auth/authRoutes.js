@@ -1,6 +1,7 @@
 const User = require("../data/model/userModel.js");
 const express = require("express");
 const bcrypt = require("bcryptjs")
+const { generateToken } = require("./token-service.js");
 const router = express.Router();
 
 
@@ -32,6 +33,20 @@ router.post('/signup',(req, res) => {
       res.status(400).json(err)
     })
 }).createUser
+
+router.post('/login', (req, res) => {
+    const {username, password} = req.body
+
+    User.findOne({username})
+        .then( user =>{
+            console.log(user._id)
+            if(user && bcrypt.compareSync(password, user.password)){
+                const token = generateToken(user)
+                
+            }
+        })
+
+})
 
 
 
