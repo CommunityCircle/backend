@@ -1,14 +1,13 @@
 const User = require("../data/model/userModel.js");
 const express = require("express");
-const bcrypt = require("bcryptjs")
+const bcrypt = require("bcryptjs");
 const { generateToken } = require("./token-service.js");
 const router = express.Router();
 
-
-router.post('/signup',(req, res) => {
+router.post("/signup", (req, res) => {
   const body = req.body;
-  const hash = bcrypt.hashSync(body.password, 14)
-  body.password = hash
+  const hash = bcrypt.hashSync(body.password, 10);
+  body.password = hash;
   if (!body) {
     return res
       .status(400)
@@ -22,32 +21,40 @@ router.post('/signup',(req, res) => {
 
   user
     .save()
-    .then(()=>{
-        return res.status(201).json({
-            success: true,
-            id: user._id,
-            message : 'User Created'
-        })
+    .then(() => {
+      return res.status(201).json({
+        success: true,
+        id: user._id,
+        message: "User Created",
+      });
     })
-    .catch(err =>{
-      res.status(400).json(err)
-    })
-}).createUser
+    .catch((err) => {
+      res.status(400).json(err);
+    });
+}).createUser;
 
-router.post('/login', (req, res) => {
-    const {username, password} = req.body
+router.post("/login", (req, res) => {
+  const username = req.body.userName;
+  const password = req.body.password;
 
-    User.findOne({username})
-        .then( user =>{
-            console.log(user._id)
-            if(user && bcrypt.compareSync(password, user.password)){
-                const token = generateToken(user)
-                
-            }
-        })
+    User.findOne( {userName : username} )
+    .then(user => {
+    console.log("db password", user.password);
+    console.log(password);
 
-})
+    if (user && bcrypt.compareSync(password, user.password)) {
+      const token = generateToken(user);
+      res.status(200).json({
+        message: `${user.userName} is logged in`,
+        token,
+        id: user.id,
+      });
+    } else {
+      res.status(401).json({ message: "You shall not pass!" });
+    }})
+   .catch(err => {
+    res.status(500).json(err, {message : "oops"});
+  })
+});
 
-
-
-module.exports =router
+module.exports = router;

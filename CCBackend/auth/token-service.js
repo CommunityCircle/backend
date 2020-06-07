@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 const jwtKey = process.env.JWT_SECRET 
 
 module.exports = {
-    generateTokens : user => {
+    generateToken : user => {
         console.log(user)
         const payload = {
             subject : user._id,

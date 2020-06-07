@@ -20,7 +20,7 @@ const User = new Schema(
         },
         "Password should be longer",
       ],
-      required: ()=>password!= null,
+      required: ()=>this.password!= null,
     },
     email: {
       type: String,
